@@ -1,15 +1,22 @@
 import styled from "styled-components";
 import { useWeb3 } from "@3rdweb/hooks";
+import Dashboard from "./Dashboard";
 
 export default function Home() {
   const { address, connectWallet } = useWeb3();
   return (
     <Wrapper>
-      <WalletConnect>
+      {address ? (
+        <Dashboard address={address} />
+      ) : (<WalletConnect>
         <Button onClick={() => connectWallet("injected")}>
           Connect Wallet
         </Button>
-      </WalletConnect>
+        <Details>
+          You need Chrome to be 
+          <br /> able to run this app.
+        </Details>
+      </WalletConnect>)}
     </Wrapper>
   );
 }
@@ -44,3 +51,11 @@ const Button = styled.div`
     cursor: pointer;
   }
 `;
+
+const Details = styled.div`
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: 500;
+  color: #282b2f;
+`
