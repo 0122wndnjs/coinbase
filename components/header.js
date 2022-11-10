@@ -9,7 +9,7 @@ const Header = ({ walletAddress, connectWallet }) => {
         <WalletLink>
           <WalletLinkTitle>Wallet Connected</WalletLinkTitle>
           <WalletAddress>
-            {walletAddress.slice(0, 7)} ... {walletAddress.slice(35)}
+            {walletAddress.slice(0, 7)}...{walletAddress.slice(35)}
           </WalletAddress>
         </WalletLink>
         <Button style={{ backgroundColor: "#3773f5", color: "#000" }}>
