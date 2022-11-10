@@ -6,6 +6,32 @@ import Coin from "./Coin";
 import BalanceChart from "./BalanceChart";
 
 const Portfolio = ({ thirdWebTokens, sanityTokens, walletAddress }) => {
+  // thirdWebTokens[0]
+  //   .balanceOf(walletAddress)
+  //   .then((balance) => console.log(Number(balance.displayValue) * 136));
+  const [walletBalance, setWalletBalance] = useState(0);
+  const tokenToUSD = {};
+
+  for (const token of sanityTokens) {
+    tokenToUSD[token.contractAddress] = Number(token.usdPrice);
+  }
+
+  useEffect(() => {
+    const calculateTotalBalance = async () => {
+      let total = 0;
+      for (const token of thirdWebTokens) {
+        const balance = await token.balanceOf(walletAddress);
+        total += Number(balance.displayValue) * tokenToUSD[token.address];
+      }
+      console.log("total: ", total);
+      setWalletBalance(total);
+    };
+
+    return () => {
+      calculateTotalBalance();
+    };
+  }, []);
+
   return (
     <Wrapper>
       <Content>
