@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Transfer from "./Transfer";
 import CoinSelector from "./CoinSelector";
 import { TailSpin } from "react-loader-spinner";
+import Receive from "./Receive";
 
 const TransferModal = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
   const [action, setAction] = useState("send");
@@ -30,7 +31,7 @@ const TransferModal = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
           />
         );
       case "receive":
-        return <h2>receive</h2>;
+        return <Receive />;
       case "select":
         return (
           <CoinSelector
@@ -49,7 +50,7 @@ const TransferModal = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
               width: "100%",
               height: "100%",
               display: "flex",
-              flexDirection: 'column',
+              flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
               fontSize: "1.5rem",
