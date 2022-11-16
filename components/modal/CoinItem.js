@@ -37,12 +37,22 @@ const CoinItem = (
 
     getImgUrl();
     getBalance();
-  });
+  }, []);
 
   return (
-    <Wrapper>
+    <Wrapper
+      style={{
+        backgroundColor: selectedToken.name === token.name && "#141519",
+      }}
+      onClick={() => {
+        setSelectedToken(token);
+        setAction("send");
+      }}
+    >
       <Main>
-        <Icon>{/* <img src="" alt="" /> */}</Icon>
+        <Icon>
+          <img src="{imageUrl}" alt="" />
+        </Icon>
       </Main>
     </Wrapper>
   );
