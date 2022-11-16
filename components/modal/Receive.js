@@ -22,6 +22,30 @@ const Receive = ({ setAction, selectedToken, walletAddress }) => {
             src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${walletAddress}`}
           />
         </QRContainer>
+        <Divider />
+        <Row>
+          <CoinSelectList>
+            <Icon>
+              <img src={imageUrl} alt="" />
+            </Icon>
+            <CoinName>{selectedToken.name}</CoinName>
+          </CoinSelectList>
+        </Row>
+        <Divider />
+        <Row>
+          <div>
+            <Title>{selectedToken.symbol} Address </Title>
+            <Address>{walletAddress}</Address>
+          </div>
+          <CopyButton
+            onClick={() => {
+              navigator.clipboard.writeText(walletAddress);
+              setCopied(true);
+            }}
+          >
+            {copied ? <FaCheck style={{ color: "#27ad75" }} /> : <BiCopy />}
+          </CopyButton>
+        </Row>
       </Content>
     </Wrapper>
   );
@@ -107,6 +131,6 @@ const Address = styled.div`
   font-size: 0.8rem;
 `;
 
-const CopyButtom = styled.div`
+const CopyButton = styled.div`
   cursor: pointer;
 `;
