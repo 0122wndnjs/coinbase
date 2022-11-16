@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Transfer from "./Transfer";
 import CoinSelector from "./CoinSelector";
+import { TailSpin } from "react-loader-spinner";
 
 const TransferModal = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
   const [action, setAction] = useState("send");
@@ -42,7 +43,17 @@ const TransferModal = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
           />
         );
       case "transferring":
-        return <h2>transferring...</h2>;
+        return (
+          <div>
+            <h2>transferring...</h2>
+            <TailSpin
+              height="100"
+              width="100"
+              color="grey"
+              ariaLabel="loading"
+            />
+          </div>
+        );
       case "transferred":
         return <h2 style={{ color: "green" }}>transfer complete</h2>;
       default:
