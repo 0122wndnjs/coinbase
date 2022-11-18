@@ -15,6 +15,7 @@ const CoinItem = (
 ) => {
   const [balance, setBalance] = useState("Fetching...");
   const [imageUrl, setImageUrl] = useState(null);
+  const [builder] = useState(imageUrlBuilder(client))
 
   useEffect(() => {
     const getBalance = async () => {
@@ -31,7 +32,7 @@ const CoinItem = (
     };
 
     const getImgUrl = async () => {
-      const imgUrl = imageUrlBuilder(client).image(token.logo).url();
+      const imgUrl = builder.image(token.logo.asset_ref).url();
       setImageUrl(imageUrl);
     };
 
@@ -42,7 +43,7 @@ const CoinItem = (
   return (
     <Wrapper
       style={{
-        backgroundColor: selectedToken.name === token.name && "#141519",
+        backgroundColor: selectedToken?.name === token.name && "#141519",
       }}
       onClick={() => {
         setSelectedToken(token);
@@ -62,7 +63,7 @@ const CoinItem = (
         {balance} {token.symbol}
       </Balance>
       <IsSelected>
-        {Boolean(selectedToken.contractAddress === token.contractAddress) && (
+        {Boolean(selectedToken?.contractAddress === token.contractAddress) && (
           <FaCheck />
         )}
       </IsSelected>
