@@ -9,7 +9,7 @@ import { ethers } from "ethers";
 const sdk = new ThirdwebSDK(
   new ethers.Wallet(
     process.env.NEXT_PUBLIC_METAMASK_KEY,
-    ethers.getDefaultProvider("https://goerli.infura.io/v3/1a8059004f144fedad0af298df0fa496") // wrong rpc address
+    ethers.getDefaultProvider("https://goerli.infura.io/v3/a1188372fbe044b3aea674e7006e6265") // wrong rpc address
   )
 );
 
