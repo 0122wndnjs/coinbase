@@ -10,7 +10,7 @@ const Sidebar = () => {
   return (
     <Wrapper>
       <LogoContainer>
-        <Logo>{/* <Image src={CoinbaseLogo} alt="Coinbase Logo" /> */}</Logo>
+        <Logo><Image src={CoinbaseLogo} alt="Coinbase Logo" height={35} width={200} /></Logo>
       </LogoContainer>
       <NavItemsContainer>
         {navItems.map((item, index) => (

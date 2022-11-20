@@ -8,9 +8,9 @@ const Coin = ({ coin }) => {
       <div>
         <div style={{ flex: 3 }}>
           <NameCol>
-            {/* <CoinIcon>
-              <Image src={coin.logo} alt={coin.name} />
-            </CoinIcon> */}
+            <CoinIcon>
+              <Image src={coin.logo} alt={coin.name} width={30} height={30} />
+            </CoinIcon>
             <div>
               <Primary>{coin.name}</Primary>
               <Secondary>{coin.sign}</Secondary>
