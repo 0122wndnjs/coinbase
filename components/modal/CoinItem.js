@@ -32,7 +32,7 @@ const CoinItem = (
     };
 
     const getImgUrl = async () => {
-      const imgUrl = builder.image(token.logo.asset_ref).url();
+      const imgUrl = builder.image(token.logo).url();
       setImageUrl(imageUrl);
     };
 

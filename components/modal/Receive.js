@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "../../lib/sanity";
@@ -8,11 +8,12 @@ import { FaCheck } from "react-icons/fa";
 const Receive = ({ setAction, selectedToken, walletAddress }) => {
   const [imageUrl, setImageUrl] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [builder] = useState(imageUrlBuilder(client));
 
   useEffect(() => {
-    const url = imageUrlBuilder(client).image(selectedToken.logo).url();
+    const url = builder.image(selectedToken.logo.asset._ref).url();
     setImageUrl(url);
-  }, [selectedToken]);
+  }, [selectedToken, builder]);
 
   return (
     <Wrapper>
@@ -24,7 +25,7 @@ const Receive = ({ setAction, selectedToken, walletAddress }) => {
         </QRContainer>
         <Divider />
         <Row>
-          <CoinSelectList>
+          <CoinSelectList onClick={() => setAction("select")}>
             <Icon>
               <img src={imageUrl} alt="" />
             </Icon>
@@ -34,12 +35,12 @@ const Receive = ({ setAction, selectedToken, walletAddress }) => {
         <Divider />
         <Row>
           <div>
-            <Title>{selectedToken.symbol} Address </Title>
-            <Address>{walletAddress}</Address>
+            <Title>{selectedToken.symbol} Address</Title>
+            <Address>{selectedToken.contractAddress}</Address>
           </div>
           <CopyButton
             onClick={() => {
-              navigator.clipboard.writeText(walletAddress);
+              navigator.clipboard.writeText(selectedToken.contractAddress);
               setCopied(true);
             }}
           >
@@ -93,8 +94,8 @@ const Icon = styled.div`
   overflow: hidden;
   display: grid;
   place-items: center;
-
   & > img {
+    /* margin: -0.5rem 1rem; */
     height: 120%;
     width: 120%;
     object-fit: cover;
@@ -102,10 +103,9 @@ const Icon = styled.div`
 `;
 
 const CoinSelectList = styled.div`
-  display: felx;
+  display: flex;
   flex: 1.3;
   height: 100%;
-
   &:hover {
     cursor: pointer;
   }
