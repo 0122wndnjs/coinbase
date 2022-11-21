@@ -9,8 +9,6 @@ const TransferModal = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
   const [action, setAction] = useState("send");
   const [selectedToken, setSelectedToken] = useState(sanityTokens[0]);
 
-  //   console.log(sanityTokens);
-
   const selectedStyle = {
     color: "#3773f5",
   };
@@ -24,14 +22,20 @@ const TransferModal = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
       case "send":
         return (
           <Transfer
-            selectedToken={sanityTokens}
+            selectedToken={selectedToken}
             setAction={setAction}
             thirdWebTokens={thirdWebTokens}
             walletAddress={walletAddress}
           />
         );
       case "receive":
-        return <Receive />;
+        return (
+          <Receive
+            setAction={setAction}
+            selectedToken={selectedToken}
+            walletAddress={walletAddress}
+          />
+        );
       case "select":
         return (
           <CoinSelector
@@ -94,9 +98,8 @@ const TransferModal = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
           style={action === "send" ? selectedStyle : unselectedStyle}
           onClick={() => setAction("send")}
         >
-          <p>send</p>
+          <p>Send</p>
         </Option>
-
         <Option
           style={action === "receive" ? selectedStyle : unselectedStyle}
           onClick={() => setAction("receive")}
@@ -134,13 +137,11 @@ const Option = styled.div`
   place-items: center;
   font-size: 1.2rem;
   font-weight: 600;
-
-  &: hover {
+  &:hover {
     cursor: pointer;
     background-color: #111214;
   }
 `;
-
 const ModalMain = styled.div`
   padding: 1rem;
   flex: 1;

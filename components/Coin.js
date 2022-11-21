@@ -1,6 +1,8 @@
+import React from "react";
 import styled from "styled-components";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Image from "next/image";
+import { coins } from "../static/coins";
 
 const Coin = ({ coin }) => {
   return (
@@ -52,7 +54,6 @@ const Wrapper = styled.div`
   width: 100%;
   justify-content: space-between;
   align-items: center;
-
   & > div {
     width: 100%;
     display: flex;

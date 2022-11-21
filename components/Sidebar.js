@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import CoinbaseLogo from "../assets/cb-logo.png";
 import Image from "next/image";
+import styled from "styled-components";
 import { navItems } from "../static/navItems";
 
 const Sidebar = () => {
   const [activeIcon, setActiveIcon] = useState(navItems[0].title);
-
   return (
     <Wrapper>
       <LogoContainer>
-        <Logo><Image src={CoinbaseLogo} alt="Coinbase Logo" height={35} width={200} /></Logo>
+        <Logo>
+          <Image src={CoinbaseLogo} alt="Coinbase Logo" height={35} width={150} />
+        </Logo>
       </LogoContainer>
       <NavItemsContainer>
-        {navItems.map((item) => (
-          <NavItem key={item.title} onClick={() => setActiveIcon(item.title)}>
+        {navItems.map((item, index) => (
+          <NavItem key={index} onClick={() => setActiveIcon(item.title)}>
             <NavIcon style={{ color: item.title === activeIcon && "#3773f5" }}>
               {item.icon}
             </NavIcon>
@@ -29,9 +30,9 @@ const Sidebar = () => {
 export default Sidebar;
 
 const Wrapper = styled.div`
+  width: calc(22rem - 16px - 16px);
   height: calc(100vh);
   border-right: 1px solid #282b2f;
-  width: calc(22rem - 16px - 16px);
   padding: 0 1rem;
 `;
 
@@ -47,7 +48,6 @@ const Logo = styled.div`
 
 const NavItemsContainer = styled.div`
   margin-top: 3rem;
-
   &:hover {
     cursor: pointer;
   }
@@ -61,7 +61,6 @@ const NavItem = styled.div`
   border-radius: 0.5rem;
   margin-bottom: 1.5rem;
   height: 4rem;
-
   &:hover {
     background-color: #141519;
   }

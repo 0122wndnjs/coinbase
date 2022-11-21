@@ -10,17 +10,15 @@ const CoinSelector = ({
   thirdWebTokens,
   walletAddress,
 }) => {
-  const [sender] = useState(walletAddress);
-
   return (
     <Wrapper>
       <Title>Select Asset</Title>
       <CoinList>
-        {sanityTokens.map((token) => (
+        {sanityTokens.map((token, index) => (
           <CoinItem
-            key={token.name}
+            key={index}
             token={token}
-            sender={sender}
+            sender={walletAddress}
             selectedToken={selectedToken}
             setSelectedToken={setSelectedToken}
             thirdWebTokens={thirdWebTokens}
@@ -43,7 +41,6 @@ const Title = styled.div`
   font-size: 1.5rem;
   margin-bottom: 1rem;
 `;
-
 const CoinList = styled.div`
   display: flex;
   flex-direction: column;

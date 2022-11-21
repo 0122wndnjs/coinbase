@@ -9,9 +9,9 @@ Modal.setAppElement("#__next");
 
 const Header = ({
   walletAddress,
-  sanityTokens,
-  thirdWebTokens,
   connectWallet,
+  thirdWebTokens,
+  sanityTokens,
 }) => {
   const router = useRouter();
 
@@ -47,6 +47,7 @@ const Header = ({
             Connect Wallet
           </Button>
         )}
+
         <Button style={{ backgroundColor: "#3773f5", color: "#000" }}>
           Buy / Sell
         </Button>
@@ -54,17 +55,14 @@ const Header = ({
           <Button>Send / Receive</Button>
         </Link>
       </ButtonsContainer>
-      <Separator />
-      <ProfileIcon />
-
       <Modal
         isOpen={!!router.query.transfer}
         onRequestClose={() => router.push("/")}
         style={customStyles}
       >
         <TransferModal
-          thirdWebTokens={thirdWebTokens}
           sanityTokens={sanityTokens}
+          thirdWebTokens={thirdWebTokens}
           walletAddress={walletAddress}
         />
       </Modal>
@@ -75,33 +73,28 @@ const Header = ({
 export default Header;
 
 const Wrapper = styled.div`
-  width: calc(100%-3rem);
+  width: calc(100% - 3rem);
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #282b2f;
   display: flex;
   align-items: center;
 `;
-
 const Title = styled.div`
   font-size: 2rem;
   font-weight: 600;
   flex: 1;
 `;
-
 const ButtonsContainer = styled.div`
   display: flex;
 `;
-
 const Button = styled.div`
   border: 1px solid #282b2f;
   padding: 0.8rem;
   font-size: 1.3rem;
-  font-weight: 500;
   border-radius: 0.4rem;
   margin-right: 1rem;
-
   &:hover {
-    cursor: poitner;
+    cursor: pointer;
   }
 `;
 
@@ -111,13 +104,12 @@ const WalletLink = styled.div`
   border-radius: 50rem;
   font-size: 1.2rem;
   margin-right: 1rem;
-  padding 0 1rem;
+  padding: 0 1rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
 `;
-
 const WalletLinkTitle = styled.div`
   font-size: 1.1rem;
   margin-bottom: 0.3rem;
@@ -128,7 +120,3 @@ const WalletLinkTitle = styled.div`
 const WalletAddress = styled.div`
   font-size: 0.8rem;
 `;
-
-const Separator = styled.div``;
-
-const ProfileIcon = styled.div``;

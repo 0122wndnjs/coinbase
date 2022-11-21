@@ -1,78 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { coins } from "../static/coins";
 import Coin from "./Coin";
 import BalanceChart from "./BalanceChart";
-import { getCurrencyBalance } from "@3rdweb/sdk";
 
 const Portfolio = ({ thirdWebTokens, sanityTokens, walletAddress }) => {
-  // thirdWebTokens[0]
-  //   .balanceOf(walletAddress)
-  //   .then((balance) => console.log(Number(balance.displayValue) * 136));
   const [walletBalance, setWalletBalance] = useState(0);
-  const [sender] = useState(walletAddress);
-  // const tokenToUSD = {};
+  const tokenToUSD = {};
 
-  // for (const token of sanityTokens) {
-  //   tokenToUSD[token.contractAddress] = Number(token.usdPrice);
-  // }
-
-  // useEffect(() => {
-  //   const calculateTotalBalance = async () => {
-  //     // setWalletBalance(0);
-  //     const totalBalance = await Promise.all(
-  //       thirdWebTokens.map(async (token) => {
-  //         const balance = await token.balanceOf(walletAddress);
-  //         return Number(balance.displayValue) * tokenToUSD[token.address];
-  //       })
-  //     );
-  //     setWalletBalance(totalBalance.reduce((acc, curr) => acc + curr, 0));
-  //     // console.log(totalBalance, "total balance");
-  //     // console.log(totalBalance.reduce((acc, curr) => acc + curr, 0));
-  //   };
-
-  const getBalance = async (activeThirdWebToken) => {
-    const balance = await activeThirdWebToken.balanceOf(sender);
-
-    return parseInt(balance.displayValue);
-  };
+  for (const token of sanityTokens) {
+    tokenToUSD[token.contractAddress] = Number(token.usdPrice);
+  }
 
   useEffect(() => {
     const calculateTotalBalance = async () => {
-      setWalletBalance(0);
-
-      sanityTokens.map(async (token) => {
-        const currentThirdWebToken = thirdWebTokens.filter(
-          thirdWebToken = thirdWebToken.address === token.contractAddress,
-        );
-
-        const balance = await getCurrencyBalance(currentThirdWebToken[0]);
-        setWalletBalance((prevState) => prevState + balance * token.usdPrice);
-      });
+      const totalBalance = await Promise.all(
+        thirdWebTokens.map(async (token) => {
+          const balance = await token.balanceOf(walletAddress);
+          return Number(balance.displayValue) * tokenToUSD[token.address];
+        })
+      );
+      console.log(totalBalance, "totalbalance");
+      setWalletBalance(totalBalance.reduce((acc, curr) => acc + curr, 0));
     };
-
-    if (sanityTokens.length > 0 && thirdWebTokens.length > 0) {
-      calculateTotalBalance();
-    }
+    calculateTotalBalance();
   }, [thirdWebTokens, sanityTokens]);
 
+  console.log(walletBalance, "wallet balance");
   return (
     <Wrapper>
       <Content>
         <Chart>
           <div>
             <Balance>
-              <BalanceTitle>Portfolio balance</BalanceTitle>
+              <BalanceTitle>Portfolio Balance</BalanceTitle>
               <BalanceValue>
                 {"$"}
                 {walletBalance.toLocaleString()}
-                {/* 46,000 */}
+                {/* 46.000 */}
               </BalanceValue>
             </Balance>
           </div>
           <BalanceChart />
         </Chart>
+
         <PortfolioTable>
           <TableItem>
             <Title>Your Assets</Title>
@@ -93,7 +65,7 @@ const Portfolio = ({ thirdWebTokens, sanityTokens, walletAddress }) => {
             <Divider />
             <div>
               {coins.map((coin) => (
-                <div>
+                <div key={coin.name}>
                   <Coin coin={coin} />
                   <Divider />
                 </div>
@@ -147,11 +119,10 @@ const Table = styled.table`
   width: 100%;
 `;
 
-const TableRow = styled.tr`
+const TableRow = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-
   & > th {
     text-align: left;
   }
@@ -162,7 +133,7 @@ const TableItem = styled.div`
 `;
 
 const Divider = styled.div`
-  border-bottom: 1px solid #232b2f;
+  border-bottom: 1px solid #282b2f;
 `;
 
 const Title = styled.div`

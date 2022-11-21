@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "../../lib/sanity";
@@ -8,12 +8,11 @@ import { FaCheck } from "react-icons/fa";
 const Receive = ({ setAction, selectedToken, walletAddress }) => {
   const [imageUrl, setImageUrl] = useState(null);
   const [copied, setCopied] = useState(false);
-  const [builder] = useState(imageUrlBuilder(client));
 
   useEffect(() => {
-    const url = builder.image(selectedToken.logo.asset._ref).url();
+    const url = imageUrlBuilder(client).image(selectedToken.logo).url();
     setImageUrl(url);
-  }, [selectedToken, builder]);
+  }, [selectedToken]);
 
   return (
     <Wrapper>
@@ -21,11 +20,12 @@ const Receive = ({ setAction, selectedToken, walletAddress }) => {
         <QRContainer>
           <img
             src={`https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${walletAddress}`}
+            alt=""
           />
         </QRContainer>
         <Divider />
         <Row>
-          <CoinSelectList onClick={() => setAction("select")}>
+          <CoinSelectList>
             <Icon>
               <img src={imageUrl} alt="" />
             </Icon>
@@ -36,11 +36,11 @@ const Receive = ({ setAction, selectedToken, walletAddress }) => {
         <Row>
           <div>
             <Title>{selectedToken.symbol} Address</Title>
-            <Address>{selectedToken.contractAddress}</Address>
+            <Address>{walletAddress}</Address>
           </div>
           <CopyButton
             onClick={() => {
-              navigator.clipboard.writeText(selectedToken.contractAddress);
+              navigator.clipboard.writeText(walletAddress);
               setCopied(true);
             }}
           >
@@ -85,7 +85,6 @@ const Row = styled.div`
   color: #8a919e;
   font-size: 1.2rem;
 `;
-
 const Icon = styled.div`
   margin-right: 1rem;
   height: 1.8rem;
@@ -95,13 +94,11 @@ const Icon = styled.div`
   display: grid;
   place-items: center;
   & > img {
-    /* margin: -0.5rem 1rem; */
     height: 120%;
     width: 120%;
     object-fit: cover;
   }
 `;
-
 const CoinSelectList = styled.div`
   display: flex;
   flex: 1.3;
@@ -126,11 +123,9 @@ const Title = styled.div`
   color: white;
   margin-bottom: 0.5rem;
 `;
-
 const Address = styled.div`
   font-size: 0.8rem;
 `;
-
 const CopyButton = styled.div`
   cursor: pointer;
 `;

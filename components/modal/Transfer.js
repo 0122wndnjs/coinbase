@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FaWallet } from "react-icons/fa";
 import imageUrlBuilder from "@sanity/image-url";
@@ -14,17 +14,20 @@ const Transfer = ({
   const [recipient, setRecipient] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
   const [activeThirdWebToken, setActiveThirdWebToken] = useState();
-  const [sender] = useState(walletAddress);
-  const [builder] = useState(imageUrlBuilder(client));
   const [balance, setBalance] = useState("Fetching...");
 
   useEffect(() => {
-    thirdWebTokens.map((token) => {
-      if (token.address === selectedToken.contractAddress) {
-        setActiveThirdWebToken(token);
-      }
-    });
+    const activeToken = thirdWebTokens.find(
+      (token) => token.address === selectedToken.contractAddress
+    );
+    setActiveThirdWebToken(activeToken);
   }, [thirdWebTokens, selectedToken]);
+
+  useEffect(() => {
+    console.log(selectedToken, "selected");
+    const url = imageUrlBuilder(client).image(selectedToken.logo).url();
+    setImageUrl(url);
+  }, [selectedToken]);
 
   useEffect(() => {
     const getBalance = async () => {
@@ -37,14 +40,10 @@ const Transfer = ({
     }
   }, [activeThirdWebToken]);
 
-  useEffect(() => {
-    console.log(selectedToken);
-    const url = builder.image(selectedToken.logo.asset_ref).url();
-    setImageUrl(url);
-  }, [selectedToken, builder]);
+  //need to be able to send money to a wallet:
 
   const sendCrypto = async (amount, recipient) => {
-    console.log("sending crypto...");
+    console.log("sending crpyto...");
 
     if (activeThirdWebToken && amount && recipient) {
       setAction("transferring");
@@ -92,14 +91,16 @@ const Transfer = ({
           <FieldName>Pay with</FieldName>
           <CoinSelectList onClick={() => setAction("select")}>
             <Icon>
-              <img src={imageUrl} alt={selectedToken.name} />
+              <img src={imageUrl} />
             </Icon>
             <CoinName>{selectedToken.name}</CoinName>
           </CoinSelectList>
         </Row>
       </TransferForm>
       <Row>
-        <Continue onClick={() => sendCrypto()}>Continue</Continue>
+        <Continue onClick={() => sendCrypto(amount, recipient)}>
+          Continue
+        </Continue>
       </Row>
       <Row>
         <BalanceTitle>{selectedToken.symbol} Balance</BalanceTitle>
@@ -114,10 +115,10 @@ const Transfer = ({
 export default Transfer;
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  flex: 1;
+    display: flex;
+    flex-direction: column;
+    height 100%;
+    flex: 1;
 `;
 
 const Amount = styled.div`
@@ -130,14 +131,12 @@ const FlexInputContainer = styled.div`
   flex: 1;
   display: flex;
   align-items: flex-end;
-
   & > span {
     font-size: 3rem;
     margin-bottom: 0.5rem;
     color: #3773f5;
   }
 `;
-
 const FlexInput = styled.input`
   border: none;
   background: none;
@@ -150,7 +149,6 @@ const FlexInput = styled.input`
   margin-right: 1rem;
   font-size: 4.5rem;
   color: #3773f5;
-
   &::-webkit-outer-spin-button,
   ::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -160,16 +158,11 @@ const FlexInput = styled.input`
 const Warning = styled.div`
   padding: 1rem 0 2rem 0;
   text-align: center;
-  color: #8a9192;
+  color: #8a919e;
 `;
 
 const Divider = styled.div`
   border-bottom: 1px solid #282b2f;
-`;
-
-const TransferForm = styled.div`
-  border: 1px solid #282b2f;
-  border-radius: 0.4rem;
 `;
 
 const Row = styled.div`
@@ -194,7 +187,6 @@ const Icon = styled.div`
   overflow: hidden;
   display: grid;
   place-items: center;
-
   & > img {
     height: 120%;
     width: 120%;
@@ -217,7 +209,6 @@ const CoinSelectList = styled.div`
   display: flex;
   flex: 1.3;
   height: 100%;
-
   &:hover {
     cursor: pointer;
   }
@@ -233,8 +224,7 @@ const CoinName = styled.div`
   text-wrap: wrap;
   margin-right: 0.5rem;
 `;
-
-const Continue = styled.div`
+const Continue = styled.button`
   color: white;
   width: 100%;
   background-color: #3773f5;
@@ -242,11 +232,15 @@ const Continue = styled.div`
   text-align: center;
   border-radius: 0.4rem;
   font-size: 1.2rem;
-
   &:hover {
     cursor: pointer;
     background-color: #4a80f6;
   }
+`;
+
+const TransferForm = styled.div`
+  border: 1px solid #282b2f;
+  border-radius: 0.4rem;
 `;
 
 const BalanceTitle = styled.div``;
