@@ -8,29 +8,30 @@ export default function Home() {
     <Wrapper>
       {address ? (
         <Dashboard address={address} />
-      ) : (<WalletConnect>
-        <Button onClick={() => connectWallet("injected")}>
-          Connect Wallet
-        </Button>
-        <Details>
-          You need Chrome to be 
-          <br /> able to run this app.
-        </Details>
-      </WalletConnect>)}
+      ) : (
+        <WalletConnect>
+          <Button onClick={() => connectWallet("injected")}>
+            Connect Wallet
+          </Button>
+          <Details>
+            You need Chrome to be
+            <br /> able to run this app.
+          </Details>
+        </WalletConnect>
+      )}
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
   display: flex;
-  height: 100wh;
-  max-width: 100vw;
+  height: 100vh;
+  max-width: 100%;
   background-color: #0a0b0d;
   color: white;
   display: grid;
   place-items: center;
 `;
-
 const WalletConnect = styled.div`
   display: flex;
   flex-direction: column;
@@ -46,16 +47,14 @@ const Button = styled.div`
   border-radius: 0.4rem;
   background-color: #3773f5;
   color: #000;
-
   &:hover {
     cursor: pointer;
   }
 `;
-
 const Details = styled.div`
   font-size: 1.2rem;
   text-align: center;
   margin-top: 1rem;
   font-weight: 500;
   color: #282b2f;
-`
+`;
