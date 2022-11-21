@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Transfer from "./Transfer";
 import CoinSelector from "./CoinSelector";
@@ -101,7 +101,7 @@ const TransferModal = ({ sanityTokens, thirdWebTokens, walletAddress }) => {
           style={action === "receive" ? selectedStyle : unselectedStyle}
           onClick={() => setAction("receive")}
         >
-          <p>receive</p>
+          <p>Receive</p>
         </Option>
       </Selector>
       <ModalMain>{selectedModal(action)}</ModalMain>

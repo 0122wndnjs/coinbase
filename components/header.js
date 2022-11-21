@@ -35,12 +35,18 @@ const Header = ({
     <Wrapper>
       <Title>Assets</Title>
       <ButtonsContainer>
-        <WalletLink>
-          <WalletLinkTitle>Wallet Connected</WalletLinkTitle>
-          <WalletAddress>
-            {walletAddress.slice(0, 7)}...{walletAddress.slice(35)}
-          </WalletAddress>
-        </WalletLink>
+        {walletAddress ? (
+          <WalletLink>
+            <WalletLinkTitle>Wallet Connected</WalletLinkTitle>
+            <WalletAddress>
+              {walletAddress.slice(0, 7)}...{walletAddress.slice(35)}
+            </WalletAddress>
+          </WalletLink>
+        ) : (
+          <Button onClick={() => connectWallet("injected")}>
+            Connect Wallet
+          </Button>
+        )}
         <Button style={{ backgroundColor: "#3773f5", color: "#000" }}>
           Buy / Sell
         </Button>
@@ -48,14 +54,17 @@ const Header = ({
           <Button>Send / Receive</Button>
         </Link>
       </ButtonsContainer>
+      <Separator />
+      <ProfileIcon />
+
       <Modal
         isOpen={!!router.query.transfer}
         onRequestClose={() => router.push("/")}
         style={customStyles}
       >
         <TransferModal
-          sanityTokens={sanityTokens}
           thirdWebTokens={thirdWebTokens}
+          sanityTokens={sanityTokens}
           walletAddress={walletAddress}
         />
       </Modal>
@@ -119,3 +128,7 @@ const WalletLinkTitle = styled.div`
 const WalletAddress = styled.div`
   font-size: 0.8rem;
 `;
+
+const Separator = styled.div``;
+
+const ProfileIcon = styled.div``;

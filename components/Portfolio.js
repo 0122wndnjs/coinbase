@@ -4,35 +4,58 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { coins } from "../static/coins";
 import Coin from "./Coin";
 import BalanceChart from "./BalanceChart";
+import { getCurrencyBalance } from "@3rdweb/sdk";
 
 const Portfolio = ({ thirdWebTokens, sanityTokens, walletAddress }) => {
   // thirdWebTokens[0]
   //   .balanceOf(walletAddress)
   //   .then((balance) => console.log(Number(balance.displayValue) * 136));
   const [walletBalance, setWalletBalance] = useState(0);
-  const tokenToUSD = {};
+  const [sender] = useState(walletAddress);
+  // const tokenToUSD = {};
 
-  for (const token of sanityTokens) {
-    tokenToUSD[token.contractAddress] = Number(token.usdPrice);
-  }
+  // for (const token of sanityTokens) {
+  //   tokenToUSD[token.contractAddress] = Number(token.usdPrice);
+  // }
+
+  // useEffect(() => {
+  //   const calculateTotalBalance = async () => {
+  //     // setWalletBalance(0);
+  //     const totalBalance = await Promise.all(
+  //       thirdWebTokens.map(async (token) => {
+  //         const balance = await token.balanceOf(walletAddress);
+  //         return Number(balance.displayValue) * tokenToUSD[token.address];
+  //       })
+  //     );
+  //     setWalletBalance(totalBalance.reduce((acc, curr) => acc + curr, 0));
+  //     // console.log(totalBalance, "total balance");
+  //     // console.log(totalBalance.reduce((acc, curr) => acc + curr, 0));
+  //   };
+
+  const getBalance = async (activeThirdWebToken) => {
+    const balance = await activeThirdWebToken.balanceOf(sender);
+
+    return parseInt(balance.displayValue);
+  };
 
   useEffect(() => {
     const calculateTotalBalance = async () => {
-      const totalBalance = await Promise.all(
-        thirdWebTokens.map(async (token) => {
-          const balance = await token.balanceOf(walletAddress);
-          return Number(balance.displayValue) * tokenToUSD[token.address];
-        })
-      );
-      setWalletBalance(totalBalance.reduce((acc, curr) => acc + curr, 0));
-      // console.log(totalBalance, "total balance");
-      // console.log(totalBalance.reduce((acc, curr) => acc + curr, 0));
+      setWalletBalance(0);
+
+      sanityTokens.map(async (token) => {
+        const currentThirdWebToken = thirdWebTokens.filter(
+          thirdWebToken = thirdWebToken.address === token.contractAddress,
+        );
+
+        const balance = await getCurrencyBalance(currentThirdWebToken[0]);
+        setWalletBalance((prevState) => prevState + balance * token.usdPrice);
+      });
     };
 
-    return () => {
+    if (sanityTokens.length > 0 && thirdWebTokens.length > 0) {
       calculateTotalBalance();
-    };
-  }, []);
+    }
+  }, [thirdWebTokens, sanityTokens]);
 
   return (
     <Wrapper>

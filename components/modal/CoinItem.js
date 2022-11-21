@@ -32,8 +32,8 @@ const CoinItem = (
     };
 
     const getImgUrl = async () => {
-      const imgUrl = builder.image(token.logo).url();
-      setImageUrl(imageUrl);
+      const imgUrl = builder.image(token.logo.asset_ref).url();
+      setImageUrl(imgUrl);
     };
 
     getImgUrl();
@@ -52,7 +52,7 @@ const CoinItem = (
     >
       <Main>
         <Icon>
-          <img src="{imageUrl}" alt="" />
+          <img src={imageUrl} alt="" />
         </Icon>
         <NameDetails>
           <Name>{token.name}</Name>

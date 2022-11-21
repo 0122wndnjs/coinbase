@@ -13,8 +13,8 @@ const Sidebar = () => {
         <Logo><Image src={CoinbaseLogo} alt="Coinbase Logo" height={35} width={200} /></Logo>
       </LogoContainer>
       <NavItemsContainer>
-        {navItems.map((item, index) => (
-          <NavItem key={index} onClick={() => setActiveIcon(item.title)}>
+        {navItems.map((item) => (
+          <NavItem key={item.title} onClick={() => setActiveIcon(item.title)}>
             <NavIcon style={{ color: item.title === activeIcon && "#3773f5" }}>
               {item.icon}
             </NavIcon>

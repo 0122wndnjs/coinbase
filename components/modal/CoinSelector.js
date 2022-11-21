@@ -10,6 +10,8 @@ const CoinSelector = ({
   thirdWebTokens,
   walletAddress,
 }) => {
+  const [sender] = useState(walletAddress);
+
   return (
     <Wrapper>
       <Title>Select Asset</Title>
@@ -18,7 +20,7 @@ const CoinSelector = ({
           <CoinItem
             key={token.name}
             token={token}
-            sender={walletAddress}
+            sender={sender}
             selectedToken={selectedToken}
             setSelectedToken={setSelectedToken}
             thirdWebTokens={thirdWebTokens}

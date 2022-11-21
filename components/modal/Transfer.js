@@ -10,25 +10,21 @@ const Transfer = ({
   thirdWebTokens,
   walletAddress,
 }) => {
-  const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState("");
   const [recipient, setRecipient] = useState("");
   const [imageUrl, setImageUrl] = useState(null);
   const [activeThirdWebToken, setActiveThirdWebToken] = useState();
+  const [sender] = useState(walletAddress);
+  const [builder] = useState(imageUrlBuilder(client));
   const [balance, setBalance] = useState("Fetching...");
 
   useEffect(() => {
-    const activeToken = thirdWebTokens.find(
-      (token) => token.address === selectedToken.contractAddress
-    );
-    // console.log(activeToken, "haha");
-    setActiveThirdWebToken(activeToken);
+    thirdWebTokens.map((token) => {
+      if (token.address === selectedToken.contractAddress) {
+        setActiveThirdWebToken(token);
+      }
+    });
   }, [thirdWebTokens, selectedToken]);
-
-  useEffect(() => {
-    console.log(selectedToken);
-    // const url = imageUrlBuilder(client).image(selectedToken.logo).url();
-    // setImageUrl(url);
-  }, [selectedToken]);
 
   useEffect(() => {
     const getBalance = async () => {
@@ -41,11 +37,17 @@ const Transfer = ({
     }
   }, [activeThirdWebToken]);
 
+  useEffect(() => {
+    console.log(selectedToken);
+    const url = builder.image(selectedToken.logo.asset_ref).url();
+    setImageUrl(url);
+  }, [selectedToken, builder]);
+
   const sendCrypto = async (amount, recipient) => {
     console.log("sending crypto...");
 
     if (activeThirdWebToken && amount && recipient) {
-      setAction('transferring')
+      setAction("transferring");
       const tx = await activeThirdWebToken.transfer(
         recipient,
         amount.toString().concat("000000000000000000")
@@ -90,16 +92,14 @@ const Transfer = ({
           <FieldName>Pay with</FieldName>
           <CoinSelectList onClick={() => setAction("select")}>
             <Icon>
-              <img src={imageUrl}></img>
+              <img src={imageUrl} alt={selectedToken.name} />
             </Icon>
             <CoinName>{selectedToken.name}</CoinName>
           </CoinSelectList>
         </Row>
       </TransferForm>
       <Row>
-        <Continue onClick={() => sendCrypto(amount, recipient)}>
-          Continue
-        </Continue>
+        <Continue onClick={() => sendCrypto()}>Continue</Continue>
       </Row>
       <Row>
         <BalanceTitle>{selectedToken.symbol} Balance</BalanceTitle>
