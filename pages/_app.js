@@ -8,10 +8,16 @@ const connectors = {
   injected: {},
 };
 
-export default function App({ Component, pageProps }) {
+function MyApp({ Component, pageProps }) {
   return (
-    <ThirdwebWeb3Provider supportedChainIds={supportedChainIds} connectors={connectors}>
+    <ThirdwebWeb3Provider
+      supportedChainIds={supportedChainIds}
+      connectors={connectors}
+    >
       <Component {...pageProps} />
     </ThirdwebWeb3Provider>
-  );
+  )
 }
+
+export default MyApp
+
